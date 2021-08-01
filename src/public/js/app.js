@@ -38,8 +38,8 @@ function showRoom() {
 	room.hidden = false 
 	const h3 = room.querySelector("h3");
 	h3.innerText = `Room ${roomName}`
-	const msgForm = room.getElementById("msg")
-	const nameForm = room.getElementById("name")
+	const msgForm = room.querySelector("#msg")
+	const nameForm = room.querySelector("#name")
 	nameForm.addEventListener("submit", handleNicknameSubmit)
 	msgForm.addEventListener("submit", handleMessageSubmit)
 }
@@ -64,3 +64,16 @@ socket.on("bye", (left) => {
 })
 
 socket.on("new_message", addMessage)
+
+socket.on("room_change", (rooms) => {
+	const roomList = welcome.querySelector("ul")
+	roomList.innerHtml = ""
+	if(rooms.length === 0) {
+		return
+	}
+	rooms.forEach(room => {
+		const li = document.createElement("li")
+		li.innerText = room 
+		roomList.append(li)
+	})
+})
